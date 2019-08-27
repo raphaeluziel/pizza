@@ -22,7 +22,7 @@ class Item(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
-        return f"{self.id} {self.size} {self.name} {self.type} for ${self.price}"
+        return f"{self.size or ''} {self.name} {self.type} for ${self.price}"
 
 
 class Order(models.Model):

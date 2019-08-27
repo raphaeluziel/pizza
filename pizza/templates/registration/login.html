@@ -20,7 +20,7 @@
 
   <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
-    <table>
+    <table class="user_forms">
 
       <tr>
         <td>{{ form.username.label_tag }}</td>
@@ -33,7 +33,7 @@
       </tr>
     </table>
 
-    <input type="submit" value="login" />
+    <input type="submit" value="login" class="btn btn-info"/>
     <input type="hidden" name="next" value="{{ next }}" />
   </form>
 

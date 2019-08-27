@@ -146,6 +146,10 @@ ul{
   text-align: center;
 }
 
+.user_forms td{
+  border-bottom: 0;
+}
+
 #cart td{
   border: 0;
 }

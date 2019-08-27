@@ -6,10 +6,44 @@
 
 {% block body %}
   <h2>Sign up</h2>
+
   <form method="post">
     {% csrf_token %}
-    {{ form }}
-    <button type="submit">Sign up</button>
+
+    <table class="user_forms">
+      <tr>
+        <td>{{ form.username.label_tag }}</td>
+        <td>{{ form.username }}</td>
+        <div class='error'>{{form.errors.username}}</div>
+      </tr>
+      <tr>
+        <td>{{ form.first_name.label_tag }}</td>
+        <td>{{ form.first_name }}</td>
+        <div class='error'>{{form.errors.first_name}}</div>
+      </tr>
+      <tr>
+        <td>{{ form.last_name.label_tag }}</td>
+        <td>{{ form.last_name }}</td>
+        <div class='error'>{{form.errors.last_name}}</div>
+      </tr>
+      <tr>
+        <td>{{ form.email.label_tag }}</td>
+        <td>{{ form.email }}</td>
+        <div class='error'>{{form.errors.email}}</div>
+      </tr>
+      <tr>
+        <td>{{ form.password1.label_tag }}</td>
+        <td>{{ form.password1 }}</td>
+        <div class='error'>{{form.errors.password1}}</div>
+      </tr>
+      <tr>
+        <td>{{ form.password2.label_tag }}</td>
+        <td>{{ form.password2 }}</td>
+        <div class='error'>{{form.errors.password2}}</div>
+      </tr>
+    </table>
+
+    <button type="submit" class="btn btn-info">Sign up</button>
   </form>
 
 {% endblock %}
