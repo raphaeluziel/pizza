@@ -54,13 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
     header.innerHTML = item_type;
     row.appendChild(header);
 
-    if((item_type !== 'Pasta') && (item_type !== 'Salad'))
+    if((item_type !== 'Pasta') && (item_type !== 'Salads')){
       row = t.insertRow();
       var cell = row.insertCell(0);
       cell = row.insertCell(1);
       cell.innerHTML = 'Small';
       cell = row.insertCell(2);
       cell.innerHTML = 'Large';
+    }
 
     // Populate the table with the item names and prices
     while (i < items.length)
@@ -103,6 +104,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       var items = JSON.parse(this.responseText);
 
+      var extras_price = 0;
+
+      for (i = 0; i < items.length; i++){
+        if (items[i].type == 'Sub'){
+          extras_price = items[i].price_extras;
+          break;
+        }
+      }
+
       // Create a list of item types
       var item_types = [];
 
@@ -127,6 +137,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
           item_types.forEach(function(x){
             drawTable(x, items, toppings, item_types);
+            if (x == 'Sub')
+            {
+              div = document.createElement('div');
+              div.innerHTML = '&nbsp;&nbsp;* Add extra cheese on any sub for $'
+                  + extras_price
+                  + '<br>** For steak subs, add extra Mushrooms, Green Peppers, Onions for $'
+                  + extras_price
+                  + ' each<br><br>';
+              document.getElementById("menu").appendChild(div);
+            }
           });
 
         }

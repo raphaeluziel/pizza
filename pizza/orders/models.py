@@ -18,10 +18,11 @@ class Item(models.Model):
     name = models.CharField(max_length=64)
     size = models.CharField(max_length=5, null=True, blank=True)
     numExtras = models.IntegerField(default=0)
+    price_extras = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     price = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
-        return f"{self.size} {self.name} {self.type} for ${self.price}"
+        return f"{self.id} {self.size} {self.name} {self.type} for ${self.price}"
 
 
 class Order(models.Model):

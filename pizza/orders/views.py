@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.contrib import messages
 
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 from .models import Item, OrderItem, Order, Topping
 
@@ -14,11 +15,15 @@ import json
 # Create your views here.
 
 def index(request):
-    orders = Order.objects.filter(customer=request.user)
-    context = {
-        "orders": orders
-    }
-    return render(request, "orders/index.html", context)
+    # If customer gets here without logging in, send them to log in page
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+    else:
+        orders = Order.objects.filter(customer=request.user)
+        context = {
+            "orders": orders
+        }
+        return render(request, "orders/index.html", context)
 
 # Return a json object of all menu items for display in the menu.html page
 def menuAPI(request):
@@ -54,14 +59,11 @@ def login(request):
             return render(request, "orders/login.html")
 
 
+@login_required()
 def order(request):
 
-    # If customer gets here without logging in, send them to log in page
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('login'))
-
     # If customer is or was working on an order, get the order
-    elif Order.objects.filter(customer=request.user, status='Not Submitted'):
+    if Order.objects.filter(customer=request.user, status='Not Submitted'):
         order = Order.objects.get(customer=request.user, status='Not Submitted')
 
     # Otherwise, create a new empty order
@@ -74,18 +76,19 @@ def order(request):
 
     # User clicks the "Add to Cart" button to add an item to the cart
     if request.method == 'POST':
+
+        # Get item information from user
         item = Item.objects.get(pk=request.POST["item"])
         quantity = int(request.POST["quantity"])
-        subtotal = item.price * quantity
-
         addons = request.POST.getlist("extras")
+
+        # User forgot to choose correct number of toppings - send them back
         if len(addons) < item.numExtras:
             messages.error(request, "Please choose the correct number of addons for your item.")
             return HttpResponseRedirect(reverse('order'))
 
-        # Extras for subs are $0.50.  This is hardcoded - NEED TO CHANGE!!!
-        if item.type == 'Sub':
-            subtotal = subtotal + Decimal(0.50 * len(addons))
+        # calculate price
+        subtotal = (item.price + Decimal(item.price_extras * len(addons))) * quantity
 
         # Add the item to the customer's order
         OrderItem(item=item, order=order, quantity=quantity, nameExtras=addons, subtotal=subtotal).save()
@@ -93,7 +96,7 @@ def order(request):
 
     context = {
         "items": Item.objects.all(),
-        "types": Item.objects.values('type').distinct(),
+        "types": Item.objects.distinct('type'),
         "toppings": Topping.objects.all(),
         "order_items": items_in_order or None,
         "order": order or None
@@ -101,10 +104,8 @@ def order(request):
 
     return render(request, "orders/order.html", context)
 
+@login_required()
 def order_details(request, order_id):
-
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('login'))
 
     try:
         order = Order.objects.get(pk=order_id)
@@ -122,12 +123,8 @@ def order_details(request, order_id):
     }
     return render(request, "orders/order_details.html", context)
 
-
+@login_required()
 def confirmation(request):
-
-    # If user is not logged in, send user to login page
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('login'))
 
     # User submits order on the order.html file
     if request.method == "POST":

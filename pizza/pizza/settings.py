@@ -128,6 +128,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Redirect to login if user is not loggeed in (for login_required views)
+LOGIN_URL = 'login'
+
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
 
