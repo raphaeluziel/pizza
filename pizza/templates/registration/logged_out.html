@@ -1,0 +1,12 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+  Logout
+{% endblock %}
+
+{% block body %}
+
+  <p>Logged out!</p>
+  <a href="{% url 'login' %}">Click here to login again.</a>
+
+{% endblock %}

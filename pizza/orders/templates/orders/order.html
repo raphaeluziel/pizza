@@ -1,0 +1,120 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+  Order
+{% endblock %}
+
+{% block body %}
+
+<script type="text/javascript" src="static/orders/order.js"></script>
+
+{{orders.id}}
+
+    {% if not user.is_authenticated %}
+      <p>Please <a href="{% url 'login' %}">login</a> or <a href="{% url 'signup' %}">sign up</a> before placing an order.</p>
+    {% endif %}
+
+    {% for type in types %}
+      <form action="" method="post">
+            {% csrf_token %}
+              <div>
+                <b>{{ type.type }}</b>
+              </div>
+              <div class="input-group">
+                <select id="{{ type.type|cut:' ' }}" class="custom-select" name="item" oninput="addToppings('{{ type.type|cut:" " }}')">
+                  {% for item in items %}
+                    {% if item.type == type.type %}
+                      <option value="{{ item.id }}" data-numExtras="{{ item.numExtras }}">{{ item }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+                <input type="number" class="quantity" name="quantity" value="1" min="1">
+                <input class="btn btn-info" type="submit" value="Add to Cart">
+              </div>
+
+              <div class="extras">
+                {% for i in '01234'|make_list %}
+                  <div id="{{ type.type|cut:' '}}{{i}}">
+                    <select id="{{ type.type|cut:' '}}{{i}}Selection" class="custom-select" name="extras">
+                      <option value="" selected disabled hidden>Choose topping</option>
+                      {% for topping in toppings %}
+                        <option value="{{ topping.topping }}">{{ topping.topping }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                {% endfor %}
+              </div>
+
+              <div class="subExtras" id="{{ type.type|cut:' '}}Extras">
+                &nbsp;&nbsp;&nbsp;&nbsp;Extras (+0.50):&nbsp;&nbsp;
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="extras" value="Cheese">
+                  <label class="form-check-label" for="inlineCheckbox1">Cheese</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="extras" value="Mushrooms">
+                  <label class="form-check-label" for="inlineCheckbox2">Mushrooms</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="extras" value="Green Peppers">
+                  <label class="form-check-label" for="inlineCheckbox3">Green Peppers</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="extras" value="Onions">
+                  <label class="form-check-label" for="inlineCheckbox3">Onions</label>
+                </div>
+              </div>
+
+        </form>
+        <br>
+      {% endfor %}
+
+      <div class="error">
+        {% if messages %}
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+        {% endif %}
+      </div>
+
+      <hr>
+      <h3>Your Cart</h3>
+
+      {% for item in order_items %}
+        <div class="cartStuff">
+          <div class="cartItems">
+            {{ item }}
+          </div>
+          <div class="cartRemoveLink">
+            <form action="{% url 'delete' %}" method="post">
+              {% csrf_token %}
+              <input type="number" name="delete" value="{{ item.id }}" hidden>
+              <button type="submit" class="submit-order">remove</button>
+            </form>
+          </div>
+        </div>
+        {% empty %}
+        <div>
+          Your cart is empty.
+        </div>
+      {% endfor %}
+
+      <br>
+
+      <div class="form-buttons">
+        <form action="{% url 'confirmation' %}" method="post">
+          {% csrf_token %}
+          <input type="number" name="order_id" value="{{ order.id }}">
+          <button type="submit" class="btn btn-success">Submit Order</button>
+        </form>
+      </div>
+
+      <div class="form-buttons">
+        <form action="{% url 'deleteAll' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Empty Cart</button>
+        </form>
+      </div>
+
+
+{% endblock %}

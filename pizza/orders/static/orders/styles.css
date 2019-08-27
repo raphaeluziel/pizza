@@ -1,0 +1,159 @@
+body {
+  background-color: darkred;
+  color: lightyellow;
+  max-width: 1000px;
+  margin: 60px auto;
+}
+
+h3{
+  text-align: center;
+}
+
+input, select {
+  margin: 5px;
+}
+
+table{
+  width: 60%;
+  margin: 20px 20px 40px 20px;
+}
+
+th{
+  text-align: center;
+}
+
+td{
+  padding: 5px;
+  border-bottom: 1px solid darkred;
+}
+
+ul{
+  list-style-type: none;
+}
+
+.cartStuff{
+  display: flex;
+}
+
+.cartItems{
+  width: 90%;
+  margin-bottom: 10px;
+  font-size: 90%;
+}
+
+.cartRemoveLink{
+  width: 8%;
+}
+
+.cart{
+  width: 90%;
+}
+
+.cart th{
+  text-align: left;
+}
+
+.cart td{
+  text-align: left;
+  border: 0;
+  padding: 2px;
+}
+
+.error{
+  color: red;
+  font-weight: bold;
+}
+
+.extras{
+  display: flex;
+  width: 85%;
+}
+
+.extras div{
+  margin-right: 10px;
+  display: none;
+}
+
+.menu_nav{
+  background-color: #eee;
+  padding: 4px;
+  margin-bottom: 4px;
+  text-align: center;
+  width: 70%;
+  font-size: 90%;
+}
+
+.form-buttons{
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.nav{
+  background-color: lightyellow;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 5px;
+  display: flex;
+  justify-content: space-around;
+  overflow: hidden;
+}
+
+.nav a{
+  color: darkred;
+  text-decoration: none;
+  display: block;
+}
+
+.nav a:hover{
+  background: lightblue;
+}
+
+.top{
+  display: flex;
+  justify-content: center;
+}
+
+.quantity{
+  width: 50px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.rest{
+  max-width: 800px;
+  color: #444;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 10px auto;
+}
+.subExtras{
+  display: none;
+}
+
+.submit-order{
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  color: #33f;
+  cursor: pointer;
+}
+
+.table_title{
+  font-weight: bold;
+  font-size: 110%;
+  text-align: center;
+}
+
+#cart td{
+  border: 0;
+}
+
+#page_title{
+  padding: 0px 40px 0px 40px;
+}
+
+#pizza_image{
+  width: 80px;
+}

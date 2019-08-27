@@ -1,0 +1,27 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+  Confirmation
+{% endblock %}
+
+{% block body %}
+
+    <h2>Order Details</h2>
+
+    <b>Order Details:</b>
+    <ul>
+      <li>Order ID: {{ order.id }}</li>
+      <li>{{ order.timestamp }}</li>
+    </ul>
+
+    <b>Items in your order:</b>
+    <ul>
+      {% for item in items_in_order %}
+          <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
+
+    <b>Your total: {{ order.total }}</b>
+
+
+{% endblock %}

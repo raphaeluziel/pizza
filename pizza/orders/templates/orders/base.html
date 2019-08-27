@@ -1,0 +1,46 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'orders/styles.css' %}">
+  </head>
+
+  <body>
+
+    <div class="top">
+      <img src="{% static 'orders/pizza.png' %}" id="pizza_image">
+      <h1 id="page_title">Ralph's Pizza Place</h1>
+      <img src="{% static 'orders/pizza.png' %}" id="pizza_image">
+    </div>
+
+    <div class="nav">
+      <a href="{% url 'index' %}">home</a>
+      <a href="{% url 'menu' %}">menu</a>
+
+      {% if user.is_authenticated %}
+        <a href="{% url 'order' %}">order</a>
+        <a href="{% url 'logout' %}">logout</a>
+
+      {% else %}
+        <a href="{% url 'login' %}">login</a>
+        <a href="{% url 'signup' %}">sign up</a>
+
+      {% endif %}
+    </div>
+
+
+
+    <div class="rest">
+      {% block body %}
+      {% endblock %}
+    </div>
+
+  </body>
+
+</html>
