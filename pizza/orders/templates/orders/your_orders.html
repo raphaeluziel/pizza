@@ -1,0 +1,25 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+  Ralph's Pizza Place
+{% endblock %}
+
+{% block body %}
+
+    <h2>Orders</h2>
+    <ul>
+      {% for order in orders %}
+        <li>
+          <a href="{% url 'order_details' order.id %}">Order # {{ order.id }}</a><br>
+           &nbsp;&nbsp;&nbsp;&nbsp;{{ order.timestamp }}<br>
+           &nbsp;&nbsp;&nbsp;&nbsp;Total: ${{ order.total }}<br>
+           &nbsp;&nbsp;&nbsp;&nbsp;Status: <b>{{ order.status }}</b><br>&nbsp;
+         </li>
+      {% empty %}
+        <li>No orders placed yet.</li>
+      {% endfor %}
+    </ul>
+
+
+
+{% endblock %}

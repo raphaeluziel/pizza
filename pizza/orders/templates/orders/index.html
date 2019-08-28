@@ -10,13 +10,8 @@
       <h3>Welcome, {{ user.first_name }}</h3>
     {% endif %}
 
-    <h2>Orders</h2>
-    <ul>
-      {% for order in orders %}
-        <li><a href="{% url 'order_details' order.id %}">Order # {{ order.id }}</a>, placed on {{ order.timestamp }} for ${{ order.total }}, status: {{ order.status }}</li>
-      {% endfor %}
-    </ul>
+    <p>At Ralph's Pizza Place we cater to the pizza connoisseur with a large variety of pizzas, including our special pizza with 5 toppings of your choice.  We also carry a lot of other types of italian food, authentically made in the traditional methods.  Located in beautiful downtown Bronx, NY, our pizzeria started in 1994.</p>
 
-
+    <a title="Mtaylor848 [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Pizza_shop,_Main_Street,_Barwick-in-Elmet_(18th_January_2014)_001.JPG"><img width="100%" alt="Pizza shop, Main Street, Barwick-in-Elmet (18th January 2014) 001" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Pizza_shop%2C_Main_Street%2C_Barwick-in-Elmet_%2818th_January_2014%29_001.JPG/2048px-Pizza_shop%2C_Main_Street%2C_Barwick-in-Elmet_%2818th_January_2014%29_001.JPG"></a>
 
 {% endblock %}

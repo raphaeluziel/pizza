@@ -1,0 +1,40 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+  Checkout
+{% endblock %}
+
+{% block body %}
+
+{{order}}
+
+    <h2>Checkout</h2>
+
+    <b>Items in your order:</b>
+    <ul>
+      {% for item in items_in_order %}
+          <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
+
+    <b>Your total: {{ order.total }}</b>
+
+    <br><br>
+
+    <div class="form-buttons">
+      <form action="{% url 'confirmation' %}" method="post">
+        {% csrf_token %}
+        <input type="number" name="order_id" value="{{ order.id }}" hidden>
+        <button type="submit" class="btn btn-success">Place Order</button>
+      </form>
+    </div>
+
+    <div class="form-buttons">
+      <form action="{% url 'cancel_order' %}" method="post">
+        {% csrf_token %}
+        <input type="number" name="order_id" value="{{ order.id }}" hidden>
+        <button type="submit" class="btn btn-danger">Cancel Order</button>
+      </form>
+    </div>
+
+{% endblock %}

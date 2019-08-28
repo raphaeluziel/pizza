@@ -11,19 +11,26 @@ from .models import Item, OrderItem, Order, Topping
 from decimal import *
 
 import json
+import os
+
+# using SendGrid's Python Library
+# https://github.com/sendgrid/sendgrid-python
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 # Create your views here.
 
 def index(request):
-    # If customer gets here without logging in, send them to log in page
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('login'))
-    else:
-        orders = Order.objects.filter(customer=request.user)
-        context = {
-            "orders": orders
-        }
-        return render(request, "orders/index.html", context)
+    return render(request, "orders/index.html")
+
+@login_required()
+def your_orders(request):
+
+    orders = Order.objects.filter(customer=request.user).order_by('-timestamp')
+    context = {
+        "orders": orders
+    }
+    return render(request, "orders/your_orders.html", context)
 
 # Return a json object of all menu items for display in the menu.html page
 def menuAPI(request):
@@ -107,11 +114,13 @@ def order(request):
 @login_required()
 def order_details(request, order_id):
 
+    # Try to get see if the url get parameter matches with a real order id
     try:
         order = Order.objects.get(pk=order_id)
     except Order.DoesNotExist:
         return render(request, "orders/error.html", {"message": "No order with this ID"})
 
+    # If the logged in user requesting this is not the one who placed the order
     if order.customer != request.user:
         return render(request, "orders/error.html", {"message": "This is not a valid order number"})
 
@@ -124,10 +133,19 @@ def order_details(request, order_id):
     return render(request, "orders/order_details.html", context)
 
 @login_required()
-def confirmation(request):
+def checkout(request):
 
-    # User submits order on the order.html file
+    # If customer did not Place Order yet
+    if Order.objects.filter(customer=request.user, status='pending'):
+        order = Order.objects.get(customer=request.user, status='pending')
+        items_in_order = OrderItem.objects.filter(order__id=order.id)
+    else:
+        order = {}
+        items_in_order = {}
+
+    # User clicked checkout button on the order.html file
     if request.method == "POST":
+
         order_id = request.POST["order_id"]
 
         # Get the order and the items in the order
@@ -146,22 +164,80 @@ def confirmation(request):
         order.status = 'pending'
         order.save()
 
-        context = {
-            "items_in_order": items_in_order,
-            "order": order
-        }
+        return HttpResponseRedirect(reverse('checkout'))
 
-        return render(request, "orders/confirmation.html", context)
+    context = {
+        "items_in_order": items_in_order,
+        "order": order
+    }
 
-    else:
-        return render(request, "orders/error.html")
-
+    return render(request, 'orders/checkout.html', context)
 
 
+@login_required()
+def confirmation(request):
+
+    list_of_items_for_email = ''
+
+    # User clicks Place Order order on the checkout.html file
+    if request.method == "POST":
+
+        # If all goes well, the order is submitted and marked as completed
+        order = Order.objects.get(customer=request.user, status='pending')
+        order.status = 'completed'
+        order.save()
+
+        items_in_order = OrderItem.objects.filter(order__id=order.id)
+
+
+        for x in items_in_order:
+            list_of_items_for_email = list_of_items_for_email + str(x.quantity) + " " + str(x.item) + "<br>"
+
+
+        email_content = "<h1>Your Order from Ralph's Pizza is Confirmed</h1>\
+                        <p>Here are your order details:</p>\
+                        <p>Order ID: <b>" + str(order.id) + "</b></p>\
+                        <p>" + str(list_of_items_for_email) + "</p>\
+                        <p>Order Total: <b>$" + str(order.total) + "</b></p>"
+
+        email_subject = "Order " + str(order.id) + " from pizza@raphaeluziel.net confirmed";
+
+
+        # The following uses SendGrid to send a confirmation email to the user
+        message = Mail(
+            from_email='pizza@raphaeluziel.net',
+            to_emails=request.user.email,
+            subject=email_subject,
+            html_content=email_content
+            )
+        try:
+            sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+            response = sg.send(message)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
+        except Exception as e:
+            print(e.message)
+
+
+
+
+        return HttpResponseRedirect(reverse("confirmation"))
+
+    return render(request, "orders/confirmation.html")
+
+
+# Deletes a single item on the users cart using the delete link
 def delete(request):
     OrderItem.objects.get(pk=request.POST['delete']).delete()
     return HttpResponseRedirect(reverse("order"))
 
+# Deletes all items on the users cart using the delete button
 def deleteAll(request):
     OrderItem.objects.filter(order__customer=request.user).delete()
+    return HttpResponseRedirect(reverse("order"))
+
+# Cancels an order before it is submitted
+def cancel_order(request):
+    Order.objects.filter(pk=request.POST['order_id']).delete()
     return HttpResponseRedirect(reverse("order"))
