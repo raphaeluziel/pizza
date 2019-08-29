@@ -2,9 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('SubExtras').style.display = 'block';
 
-
-
-
 });
 
 function addToppings(x){

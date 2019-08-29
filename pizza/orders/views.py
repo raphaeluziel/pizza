@@ -2,6 +2,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonRespons
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib import messages
+from django.conf import settings
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -17,6 +18,11 @@ import os
 # https://github.com/sendgrid/sendgrid-python
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+
+import stripe
+
+from dotenv import load_dotenv
+load_dotenv()
 
 # Create your views here.
 
@@ -102,7 +108,7 @@ def order(request):
         return HttpResponseRedirect(reverse('order'))
 
     context = {
-        "items": Item.objects.all(),
+        "items": Item.objects.order_by('id').all(),
         "types": Item.objects.order_by('position').distinct('position'),
         "toppings": Topping.objects.all(),
         "order_items": items_in_order or None,
@@ -182,13 +188,23 @@ def confirmation(request):
     # User clicks Place Order order on the checkout.html file
     if request.method == "POST":
 
+
         # If all goes well, the order is submitted and marked as completed
         order = Order.objects.get(customer=request.user, status='pending')
         order.status = 'completed'
         order.save()
 
-        items_in_order = OrderItem.objects.filter(order__id=order.id)
+        stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+        token = request.POST['stripeToken']
+        charge = stripe.Charge.create(
+          amount=int(100 * order.total),
+          currency='usd',
+          description='Ralph\'s Pizza Place',
+          source=token,
+        )
 
+
+        items_in_order = OrderItem.objects.filter(order__id=order.id)
 
         for x in items_in_order:
             list_of_items_for_email = list_of_items_for_email + str(x.quantity) + " " + str(x.item) + "<br>"
@@ -218,8 +234,6 @@ def confirmation(request):
             print(response.headers)
         except Exception as e:
             print(e.message)
-
-
 
 
         return HttpResponseRedirect(reverse("confirmation"))

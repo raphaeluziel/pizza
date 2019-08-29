@@ -7,6 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
+    <script src="https://js.stripe.com/v3/"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'orders/styles.css' %}">
   </head>
@@ -24,8 +25,8 @@
       <a href="{% url 'menu' %}">menu</a>
 
       {% if user.is_authenticated %}
-        <a href="{% url 'order' %}">place order</a>
-        <a href="{% url 'your_orders' %}">order status</a>
+        <a href="{% url 'order' %}">shop</a>
+        <a href="{% url 'your_orders' %}">orders</a>
         <a href="{% url 'logout' %}">logout</a>
 
       {% else %}

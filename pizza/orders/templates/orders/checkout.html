@@ -6,7 +6,7 @@
 
 {% block body %}
 
-{{order}}
+<script type="text/javascript" src="static/orders/checkout.js"></script>
 
     <h2>Checkout</h2>
 
@@ -18,23 +18,31 @@
     </ul>
 
     <b>Your total: {{ order.total }}</b>
+    <br>&nbsp;
 
-    <br><br>
+    <form action="{% url 'confirmation' %}" method="post" id="payment-form">
+      {% csrf_token %}
+      <div class="form-row">
 
-    <div class="form-buttons">
-      <form action="{% url 'confirmation' %}" method="post">
-        {% csrf_token %}
-        <input type="number" name="order_id" value="{{ order.id }}" hidden>
-        <button type="submit" class="btn btn-success">Place Order</button>
-      </form>
-    </div>
+        <div id="card-element">
+          <!-- A Stripe Element will be inserted here. -->
+        </div>
 
-    <div class="form-buttons">
-      <form action="{% url 'cancel_order' %}" method="post">
-        {% csrf_token %}
-        <input type="number" name="order_id" value="{{ order.id }}" hidden>
-        <button type="submit" class="btn btn-danger">Cancel Order</button>
-      </form>
-    </div>
+        <!-- Used to display form errors. -->
+        <div id="card-errors" role="alert"></div>
+      </div>
+      <br>
+      <button class="btn btn-success">Place order</button>
+    </form>
+
+    <br>
+
+    <form action="{% url 'cancel_order' %}" method="post">
+      {% csrf_token %}
+      <input type="number" name="order_id" value="{{ order.id }}" hidden>
+      <button type="submit" class="btn btn-danger">Cancel Order</button>
+    </form>
+
+
 
 {% endblock %}
