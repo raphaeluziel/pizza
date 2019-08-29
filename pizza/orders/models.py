@@ -20,6 +20,7 @@ class Item(models.Model):
     numExtras = models.IntegerField(default=0)
     price_extras = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     price = models.DecimalField(max_digits=5, decimal_places=2)
+    position = models.IntegerField(default=1000000)
 
     def __str__(self):
         return f"{self.size or ''} {self.name} {self.type} for ${self.price}"

@@ -103,7 +103,7 @@ def order(request):
 
     context = {
         "items": Item.objects.all(),
-        "types": Item.objects.distinct('type'),
+        "types": Item.objects.order_by('position').distinct('position'),
         "toppings": Topping.objects.all(),
         "order_items": items_in_order or None,
         "order": order or None

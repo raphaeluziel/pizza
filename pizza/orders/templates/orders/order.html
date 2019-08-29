@@ -8,7 +8,6 @@
 
 <script type="text/javascript" src="static/orders/order.js"></script>
 
-
     {% if not user.is_authenticated %}
       <p>Please <a href="{% url 'login' %}">login</a> or <a href="{% url 'signup' %}">sign up</a> before placing an order.</p>
     {% endif %}
