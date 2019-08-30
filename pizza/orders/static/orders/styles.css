@@ -190,6 +190,6 @@ ul{
   background-color: #fefde5 !important;
 }
 
-#card-element{
+#card-element, .StripeElement{
   width: 450px;
 }

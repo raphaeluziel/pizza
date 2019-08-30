@@ -9,17 +9,34 @@
     <h2>Orders</h2>
     <ul>
       {% for order in orders %}
-        <li>
-          <a href="{% url 'order_details' order.id %}">Order # {{ order.id }}</a><br>
-           &nbsp;&nbsp;&nbsp;&nbsp;{{ order.timestamp }}<br>
-           &nbsp;&nbsp;&nbsp;&nbsp;Total: ${{ order.total }}<br>
-           &nbsp;&nbsp;&nbsp;&nbsp;Status: <b>{{ order.status }}</b><br>&nbsp;
-         </li>
-      {% empty %}
+        {% if order.total > 0 %}
+          <li>
+            <a href="{% url 'order_details' order.id %}">Order # {{ order.id }}</a><br>
+             &nbsp;&nbsp;&nbsp;&nbsp;{{ order.timestamp }}<br>
+             &nbsp;&nbsp;&nbsp;&nbsp;Total: ${{ order.total }}<br>
+             &nbsp;&nbsp;&nbsp;&nbsp;Status: <b>{{ order.status }}</b>
+
+
+             {% if order.status != 'completed' %}
+               <form action="{% url 'checkout' %}" method="post">
+                 {% csrf_token %}
+                 <input type="number" name="order_id" value="{{ order.id }}" hidden>
+                 <button type="submit" class="submit-order">&nbsp;&nbsp;&nbsp;&nbsp;Checkout</button>
+               </form>
+
+               <form action="{% url 'cancel_order' %}" method="post">
+                 {% csrf_token %}
+                 <input type="number" name="order_id" value="{{ order.id }}" hidden>
+                 <button type="submit" class="submit-order">&nbsp;&nbsp;&nbsp;&nbsp;Cancel Order</button>
+               </form>
+             {% endif %}
+           </li>
+           <br>
+         {% endif %}
+       {% empty %}
         <li>No orders placed yet.</li>
       {% endfor %}
     </ul>
-
 
 
 {% endblock %}

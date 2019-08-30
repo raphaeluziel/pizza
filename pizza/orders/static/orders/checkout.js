@@ -70,5 +70,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Submit the form
     form.submit();
   }
-  
 });

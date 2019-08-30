@@ -32,7 +32,7 @@ def index(request):
 @login_required()
 def your_orders(request):
 
-    orders = Order.objects.filter(customer=request.user).order_by('-timestamp')
+    orders = Order.objects.filter(customer=request.user).order_by('-id')
     context = {
         "orders": orders
     }
@@ -41,7 +41,7 @@ def your_orders(request):
 # Return a json object of all menu items for display in the menu.html page
 def menuAPI(request):
     menu = []
-    for x in Item.objects.values():
+    for x in Item.objects.order_by('position').values():
         menu.append(x)
     menuJSON = JsonResponse(menu, safe=False)
     return HttpResponse(menuJSON)
@@ -141,9 +141,9 @@ def order_details(request, order_id):
 @login_required()
 def checkout(request):
 
-    # If customer did not Place Order yet
+    # If customer did not finish placing order yet
     if Order.objects.filter(customer=request.user, status='pending'):
-        order = Order.objects.get(customer=request.user, status='pending')
+        order = Order.objects.filter(customer=request.user, status='pending').last()
         items_in_order = OrderItem.objects.filter(order__id=order.id)
     else:
         order = {}
@@ -170,7 +170,14 @@ def checkout(request):
         order.status = 'pending'
         order.save()
 
-        return HttpResponseRedirect(reverse('checkout'))
+        context = {
+            "items_in_order": items_in_order,
+            "order": order
+        }
+
+        return render(request, 'orders/checkout.html', context)
+
+        #return HttpResponseRedirect(reverse('checkout'))
 
     context = {
         "items_in_order": items_in_order,
@@ -188,21 +195,24 @@ def confirmation(request):
     # User clicks Place Order order on the checkout.html file
     if request.method == "POST":
 
-
         # If all goes well, the order is submitted and marked as completed
-        order = Order.objects.get(customer=request.user, status='pending')
-        order.status = 'completed'
-        order.save()
+        order = Order.objects.get(pk=request.POST['order_id'])
 
         stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
         token = request.POST['stripeToken']
-        charge = stripe.Charge.create(
-          amount=int(100 * order.total),
-          currency='usd',
-          description='Ralph\'s Pizza Place',
-          source=token,
-        )
 
+        try:
+            charge = stripe.Charge.create(
+              amount=int(100 * order.total),
+              currency='usd',
+              description='Ralph\'s Pizza Place',
+              source=token,
+            )
+        except:
+            return render(request, 'orders/error.html', {"message": "Card Declined"})
+
+        order.status = 'completed'
+        order.save()
 
         items_in_order = OrderItem.objects.filter(order__id=order.id)
 
@@ -234,7 +244,6 @@ def confirmation(request):
             print(response.headers)
         except Exception as e:
             print(e.message)
-
 
         return HttpResponseRedirect(reverse("confirmation"))
 

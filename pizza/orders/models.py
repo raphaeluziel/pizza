@@ -35,6 +35,7 @@ class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Not Submitted')
     timestamp = models.DateTimeField(auto_now=True)
+    address = models.CharField(max_length=200, default='Pickup')
     total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
 
     def __str__(self):

@@ -23,16 +23,18 @@
     <form action="{% url 'confirmation' %}" method="post" id="payment-form">
       {% csrf_token %}
       <div class="form-row">
-
+        <input class="StripeElement" type="text" name="address" placeholder="Delivery Address">
+      </div>
+      <div class="form-row">
         <div id="card-element">
           <!-- A Stripe Element will be inserted here. -->
         </div>
-
         <!-- Used to display form errors. -->
         <div id="card-errors" role="alert"></div>
       </div>
       <br>
-      <button class="btn btn-success">Place order</button>
+      <input type="number" name="order_id" value="{{ order.id }}" hidden>
+      <button class="btn btn-success">Place Order</button>
     </form>
 
     <br>
@@ -42,6 +44,8 @@
       <input type="number" name="order_id" value="{{ order.id }}" hidden>
       <button type="submit" class="btn btn-danger">Cancel Order</button>
     </form>
+
+</section>
 
 
 
