@@ -11,7 +11,9 @@ class Topping(models.Model):
     topping = models.CharField(max_length=64, unique=True)
 
     def __str__(self):
-        return f"{self.topping}"
+        # The top return is for older versions, like on my server
+        return "{}".format(self.topping)
+        #return f"{self.topping}"
 
 class Item(models.Model):
     type = models.CharField(max_length=64)
@@ -23,7 +25,9 @@ class Item(models.Model):
     position = models.IntegerField(default=1000000)
 
     def __str__(self):
-        return f"{self.size or ''} {self.name} {self.type} for ${self.price}"
+        # The top return is for older versions, like on my server
+        return "{} {} {} for ${}".format(self.size or '', self.name, self.type, self.price)
+        #return f"{self.size or ''} {self.name} {self.type} for ${self.price}"
 
 
 class Order(models.Model):
@@ -39,7 +43,9 @@ class Order(models.Model):
     total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
 
     def __str__(self):
-        return f"Order #{self.id}, {self.timestamp.strftime('%c')} for {self.customer}.  Status: {self.status} "
+        # The top return is for older versions, like on my server
+        return "Order #{}, {} for {}.  Status: {}".format(self.id, self.timestamp.strftime('%c'), self.customer, self.status)
+        #return f"Order #{self.id}, {self.timestamp.strftime('%c')} for {self.customer}.  Status: {self.status}"
 
 class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='item')
@@ -49,4 +55,6 @@ class OrderItem(models.Model):
     subtotal = models.DecimalField(max_digits=7, decimal_places=2)
 
     def __str__(self):
-        return f"{self.quantity} {self.item} each, with {', '.join(self.nameExtras) or 'no addons'} for ${self.subtotal}"
+        # The top return is for older versions, like on my server
+        return "{} {}  each, with {} for ${}".format(self.quantity, self.item, ', '.join(self.nameExtras) or 'no addons', self.subtotal)
+        #return f"{self.quantity} {self.item} each, with {', '.join(self.nameExtras) or 'no addons'} for ${self.subtotal}"

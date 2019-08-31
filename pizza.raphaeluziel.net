@@ -1,0 +1,14 @@
+server {
+    listen 80;
+    server_name pizza.raphaeluziel.net;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/raphaeluziel/pizza;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/raphaeluziel/pizza/pizza.sock;
+    }
+}
