@@ -14,58 +14,70 @@
 
     {% for type in types %}
       <form action="" method="post">
-            {% csrf_token %}
-              <div>
-                <b>{{ type.type }}</b>
-              </div>
-              <div class="input-group">
-                <select id="{{ type.type|cut:' ' }}" class="custom-select" name="item" oninput="addToppings('{{ type.type|cut:" " }}')">
-                  {% for item in items %}
-                    {% if item.type == type.type %}
-                      <option value="{{ item.id }}" data-numExtras="{{ item.numExtras }}">{{ item }}</option>
-                    {% endif %}
-                  {% endfor %}
-                </select>
-                <input type="number" class="quantity" name="quantity" value="1" min="1">
-                <input class="btn btn-info" type="submit" value="Add to Cart">
-              </div>
+        {% csrf_token %}
 
-              <div class="extras">
-                {% for i in '01234'|make_list %}
-                  <div id="{{ type.type|cut:' '}}{{i}}">
-                    <select id="{{ type.type|cut:' '}}{{i}}Selection" class="custom-select" name="extras">
-                      <option value="" selected disabled hidden>Choose topping</option>
-                      {% for topping in toppings %}
-                        <option value="{{ topping.topping }}">{{ topping.topping }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                {% endfor %}
-              </div>
+        <div>
+          <b>{{ type.type }}</b>
+        </div>
 
-              <div class="subExtras" id="{{ type.type|cut:' '}}Extras">
-                &nbsp;&nbsp;&nbsp;&nbsp;Extras (+0.50):&nbsp;&nbsp;
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" name="extras" value="Cheese">
-                  <label class="form-check-label" for="inlineCheckbox1">Cheese</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" name="extras" value="Mushrooms">
-                  <label class="form-check-label" for="inlineCheckbox2">Mushrooms</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" name="extras" value="Green Peppers">
-                  <label class="form-check-label" for="inlineCheckbox3">Green Peppers</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" name="extras" value="Onions">
-                  <label class="form-check-label" for="inlineCheckbox3">Onions</label>
-                </div>
-              </div>
+        <div class="form-group">
+          <select id="{{ type.type|cut:' ' }}" class="custom-select" name="item" oninput="addToppings('{{ type.type|cut:" " }}')">
+            {% for item in items %}
+              {% if item.type == type.type %}
+                <option value="{{ item.id }}" data-numExtras="{{ item.numExtras }}">{{ item }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        </div>
 
-        </form>
-        <br>
-      {% endfor %}
+        {% for i in '01234'|make_list %}
+          <div class="extras" id="{{ type.type|cut:' '}}{{i}}">
+            <select id="{{ type.type|cut:' '}}{{i}}Selection" class="custom-select" name="extras">
+              <option value="" selected disabled hidden>Choose topping</option>
+              {% for topping in toppings %}
+                <option value="{{ topping.topping }}">{{ topping.topping }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endfor %}
+
+        <div>
+          <select class="form-control" name="quantity">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+
+        <div class="subExtras" id="{{ type.type|cut:' '}}Extras">
+          <br>Extras (+0.50):
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="extras" value="Cheese">
+            <label class="form-check-label" for="Cheese">Cheese</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="extras" value="Mushrooms">
+            <label class="form-check-label" for="Mushrooms">Mushrooms</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="extras" value="Green Peppers">
+            <label class="form-check-label" for="Green Peppers">Green Peppers</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="extras" value="Onions">
+            <label class="form-check-label" for="Onions">Onions</label>
+          </div>
+        </div>
+
+
+        <input class="btn btn-light btn-block" type="submit" value="Add to Cart">
+        <br>&nbsp;
+
+      </form>
+    {% endfor %}
+
 
       <div class="error">
         {% if messages %}

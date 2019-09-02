@@ -44,6 +44,7 @@ ul{
   .rest{
     width: 95%;
   }
+
   #pizza_image{
     display: none;
   }
@@ -87,12 +88,6 @@ ul{
 }
 
 .extras{
-  display: flex;
-  width: 85%;
-}
-
-.extras div{
-  margin-right: 10px;
   display: none;
 }
 
@@ -135,12 +130,6 @@ ul{
   justify-content: center;
 }
 
-.quantity{
-  width: 50px;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-  text-align: center;
-}
 
 .rest{
   max-width: 800px;
