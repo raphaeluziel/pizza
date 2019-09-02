@@ -31,7 +31,12 @@ ul{
   list-style-type: none;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 600px) {
+  .menu_nav{
+    width: 20000px;
+    color: pink;
+    background-color: pink;
+  }
   body{
     margin: 10px auto;
   }
@@ -39,12 +44,18 @@ ul{
     width: 55vw;
   }
   table{
+    width: 100%;
     margin: 0;
+  }
+  .form-check-input{
+    margin-left: -20vw;
+  }
+  .form-check-label{
+    margin-left: 15vw;
   }
   .rest{
     width: 95%;
   }
-
   #pizza_image{
     display: none;
   }
@@ -54,18 +65,19 @@ ul{
   }
 }
 
+.add_to_cart{
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
 .cartStuff{
   display: flex;
 }
 
 .cartItems{
-  width: 90%;
-  margin-bottom: 10px;
+  width: 60vw;
+  margin: 0px 2em 1em 1em;
   font-size: 90%;
-}
-
-.cartRemoveLink{
-  width: 8%;
 }
 
 .cart{
@@ -142,6 +154,7 @@ ul{
 
 .subExtras{
   display: none;
+  margin-left: 10vw;
 }
 
 .submit-order{

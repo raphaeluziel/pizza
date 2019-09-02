@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (x == 'Sub')
             {
               div = document.createElement('div');
-              div.style.width = '50%'
+              div.style.width = '80%'
               div.style.margin = '10px auto'
               div.innerHTML = '&nbsp;&nbsp;* Add extra cheese on any sub for $'
                   + extras_price

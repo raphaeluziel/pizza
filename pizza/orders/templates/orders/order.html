@@ -53,27 +53,26 @@
 
         <div class="subExtras" id="{{ type.type|cut:' '}}Extras">
           <br>Extras (+0.50):
-          <div class="form-check form-check-inline">
+          <div class="form-check">
             <input class="form-check-input" type="checkbox" name="extras" value="Cheese">
             <label class="form-check-label" for="Cheese">Cheese</label>
           </div>
-          <div class="form-check form-check-inline">
+          <div class="form-check">
             <input class="form-check-input" type="checkbox" name="extras" value="Mushrooms">
             <label class="form-check-label" for="Mushrooms">Mushrooms</label>
           </div>
-          <div class="form-check form-check-inline">
+          <div class="form-check">
             <input class="form-check-input" type="checkbox" name="extras" value="Green Peppers">
             <label class="form-check-label" for="Green Peppers">Green Peppers</label>
           </div>
-          <div class="form-check form-check-inline">
+          <div class="form-check">
             <input class="form-check-input" type="checkbox" name="extras" value="Onions">
             <label class="form-check-label" for="Onions">Onions</label>
           </div>
         </div>
 
 
-        <input class="btn btn-light btn-block" type="submit" value="Add to Cart">
-        <br>&nbsp;
+        <input class="btn btn-light btn-block add_to_cart" type="submit" value="Add to Cart">
 
       </form>
     {% endfor %}
