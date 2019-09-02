@@ -31,6 +31,28 @@ ul{
   list-style-type: none;
 }
 
+@media (max-width: 800px) {
+  body{
+    margin: 10px auto;
+  }
+  input{
+    width: 55vw;
+  }
+  table{
+    margin: 0;
+  }
+  .rest{
+    width: 95%;
+  }
+  #pizza_image{
+    display: none;
+  }
+  #page_title{
+    padding: 0;
+    font-size: 2em;
+  }
+}
+
 .cartStuff{
   display: flex;
 }
@@ -77,7 +99,7 @@ ul{
 .menu_nav{
   background-color: #eee;
   padding: 4px;
-  margin-bottom: 4px;
+  margin: 4px auto;
   text-align: center;
   width: 70%;
   font-size: 90%;
@@ -128,6 +150,7 @@ ul{
   padding: 20px;
   margin: 10px auto;
 }
+
 .subExtras{
   display: none;
 }
@@ -159,7 +182,8 @@ ul{
 }
 
 #pizza_image{
-  width: 80px;
+  width: 10%;
+  height: 10%;
 }
 
 .StripeElement {

@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Create a div to hold the toppings list
       const d = document.createElement('div');
       d.setAttribute('id', 'topps');
-      d.setAttribute('style', 'text-align: center; width: 60%; margin: 20px 0px;');
+      d.setAttribute('style', 'text-align: center; width: 100%; margin: 20px 0px;');
       document.getElementById("menu").appendChild(d);
 
       // Create a div to title the toppings section
@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Create a table for each of the other item types
     t = document.createElement('table');
+    t.style.margin = '20px auto';
     var row = t.insertRow(-1);
     var header = document.createElement('th');
     header.setAttribute('colspan', '3')
@@ -140,6 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (x == 'Sub')
             {
               div = document.createElement('div');
+              div.style.width = '50%'
+              div.style.margin = '10px auto'
               div.innerHTML = '&nbsp;&nbsp;* Add extra cheese on any sub for $'
                   + extras_price
                   + '<br>** For steak subs, add extra Mushrooms, Green Peppers, Onions for $'
