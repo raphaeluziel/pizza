@@ -138,5 +138,6 @@ dmypy.json
 
 # Added by Raphael
 setup.info
+pizza.sql
 
 # End of https://www.gitignore.io/api/django
