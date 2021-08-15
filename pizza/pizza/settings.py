@@ -30,8 +30,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # ALLOWED_HOSTS = []
 
 # For production use the ones below
-DEBUG = False
-ALLOWED_HOSTS = ['.raphaeluziel.net', '68.66.193.148']
+DEBUG = True
+ALLOWED_HOSTS = ['pizza.raphaeluziel.com', '147.182.162.93', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -144,3 +144,5 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = os.getenv("SENDGRID_PASSWORD")
 EMAIL_USE_TLS = True
+
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
