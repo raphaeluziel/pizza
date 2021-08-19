@@ -30,8 +30,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # ALLOWED_HOSTS = []
 
 # For production use the ones below
-DEBUG = True
-ALLOWED_HOSTS = ['pizza.raphaeluziel.com', '147.182.162.93', '127.0.0.1', 'localhost']
+DEBUG = False
+ALLOWED_HOSTS = ['raphaeluziel.com', 'pizza.raphaeluziel.com', '147.182.135.162', '127.0.0.1', 'localhost']
 
 
 # Application definition

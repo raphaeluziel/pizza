@@ -1,13 +1,17 @@
 [Unit]
-Description=Gunicorn instance to serve pizza
+Description=gunicorn daemon
+Requires=pizza.socket
 After=network.target
 
 [Service]
 User=raphaeluziel
 Group=www-data
 WorkingDirectory=/home/raphaeluziel/pizza
-Environment="PATH=/home/raphaeluziel/pizza/venv/bin"
-ExecStart=/home/raphaeluziel/pizza/venv/bin/gunicorn --access-logfile - --workers 1 --bind unix:/home/raphaeluziel/pizza/pizza.sock pizza.wsgi:application
+ExecStart=/home/raphaeluziel/pizza/pizzaenv/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/pizza.sock \
+          pizza.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
