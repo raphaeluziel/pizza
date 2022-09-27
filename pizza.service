@@ -7,7 +7,7 @@ After=network.target
 User=raphaeluziel
 Group=www-data
 WorkingDirectory=/home/raphaeluziel/pizza
-ExecStart=/home/raphaeluziel/pizza/pizzaenv/bin/gunicorn \
+ExecStart=/home/raphaeluziel/pizza/venv/bin/gunicorn \
           --access-logfile - \
           --workers 3 \
           --bind unix:/run/pizza.sock \
