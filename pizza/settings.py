@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 # For production use the ones below
 DEBUG = False
-ALLOWED_HOSTS = ['raphaeluziel.com', 'pizza.raphaeluziel.com', '147.182.135.162', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['pizza.raphaeluziel.com', '147.182.135.162', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'pizza.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'pizza',
+        'NAME': 'pizzadb',
         'USER': 'raphaeluziel',
         'PASSWORD': os.getenv("DATABASE_PASSWORD"),
         'HOST': 'localhost',

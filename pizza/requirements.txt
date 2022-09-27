@@ -1,6 +1,0 @@
-django
-python-dotenv
-psycopg2
-sendgrid
-stripe
-gunicorn
